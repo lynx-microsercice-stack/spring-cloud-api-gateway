@@ -1,6 +1,13 @@
-version: '3.8'
-
 services:
+  app:
+    image: spring-cloud-gateway
+    depends_on:
+      - eureka-server
+    ports:
+      - "8080:8080"
+    networks:
+      - gateway-network
+    restart: always
   eureka-server:
     build:
       context: ./eureka-server
@@ -14,8 +21,8 @@ services:
       - EUREKA_CLIENT_FETCH_REGISTRY=false
       - EUREKA_SERVER_WAIT_TIME_IN_MS_WHEN_SYNC_EMPTY=0
     networks:
-      - microservices-network
+      - gateway-network
     restart: always
 networks:
-  microservices-network:
+  gateway-network:
     driver: bridge

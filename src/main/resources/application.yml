@@ -19,8 +19,14 @@ spring:
           predicates:
             - Path=/api/v1/users/**
           filters:
-            - StripPrefix=2
-
+            - RewritePath=/api/v1/users/(?<segment>.*), /api/v1/users/${segment}
+            
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/products/**
+          filters:
+            - RewritePath=/api/v1/products/(?<segment>.*), /api/v1/products/${segment}
 eureka:
   client:
     service-url:
